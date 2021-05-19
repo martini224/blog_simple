@@ -38,8 +38,8 @@ if(isset($user)) {
         $title = test_input($_POST["title"]);
         $excerpt = test_input($_POST["excerpt"]);
         $body = test_input($_POST["body"]);
-        $uuid = "test";
-        $imageExtension = null;
+        $uuid = "";
+        $image = null;
 
         $errors = [];
 
@@ -51,6 +51,25 @@ if(isset($user)) {
             $errors['body'] = 'Le contenu est requis.';
         }
 
+        if (isset($_FILES["image"])) {
+            $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/php_simple/resources/images/articles/";
+            $image = $target_dir . $_FILES["image"]["name"];
+            $imageExtension = strtolower(pathinfo($image,PATHINFO_EXTENSION));
+
+            if($imageExtension != "jpg" && $imageExtension != "png" && $imageExtension != "jpeg" && $imageExtension != "gif" ) {
+                $errors['image'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
+            } else {
+                // Si le fichier existe, on le supprime
+                if(file_exists($image)) {
+                    unlink($image);
+                }
+
+                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $image)) {
+                    $errors['body'] = 'Erreur inatendue.';
+                }
+            }
+        }
+
         if (empty($errors)) {
             try {
                 $stmt = $db->prepare('INSERT INTO article(uuid, title, excerpt, body, image_extension, users_id) VALUES (:uuid, :title, :excerpt, :body, :image_extension, :users_id)');
@@ -59,11 +78,11 @@ if(isset($user)) {
                 $stmt->bindParam(':title', $title, PDO::PARAM_STR);
                 $stmt->bindParam(':excerpt', $excerpt, PDO::PARAM_STR);
                 $stmt->bindParam(':body', $body, PDO::PARAM_STR);
-                $stmt->bindParam(':image_extension', $imageExtension, PDO::PARAM_STR);
+                $stmt->bindParam(':image', $image, PDO::PARAM_STR);
                 $stmt->bindParam(':users_id', $user['id'], PDO::PARAM_INT);
                 $stmt->execute();
 
-                header('Location: http://localhost/php_simple/pages/articles/articles.php');
+                //header('Location: http://localhost/php_simple/pages/articles/articles.php');
             } catch (Exception $exception) {
                 echo $exception;
             }
@@ -92,7 +111,7 @@ if(isset($user)) {
     <div class="container">
         <div class="row">
             <div class="col">
-                <form role="form" method="POST" accept-charset="UTF-8" action="<?php echo $_SERVER["PHP_SELF"];?>" novalidate>
+                <form role="form" method="POST" accept-charset="UTF-8" action="<?php echo $_SERVER["PHP_SELF"];?>" enctype="multipart/form-data" novalidate>
                     <input type="text" name="id" value="{{uuid}}" class="d-none" />
                     <input type="text" name="version" value="{{version_iso}}" class="d-none" />
                     <input type="text" name="image_extension" value="{{image_extension}}" class="d-none" />
@@ -112,8 +131,10 @@ if(isset($user)) {
                         <label for="excerpt">Image de l'article</label>
                         <div class="d-flex">
                             <div class="flex-grow-1">
-                                <input type="file" id="image" name="image" class="form-control" accept="image/png, image/jpeg, image/jpg, image/gif" aria-describedby="validation-image">
-                                <div id="validation-image" class="invalid-feedback"></div>
+                                <input type="file" id="image" name="image" class="form-control <?php echo (isset($errors['image']) ? 'is-invalid' : '') ?>" accept="image/png, image/jpeg, image/jpg, image/gif" aria-describedby="validation-image">
+                                <div id="validation-image" class="invalid-feedback">
+                                    <?php echo (isset($errors['image']) ? $errors['image'] : '') ?>
+                                </div>
                             </div>
                             <div class="mt-1 pr-1 flex-grow-1 d-flex justify-content-end">
                                 <div>
