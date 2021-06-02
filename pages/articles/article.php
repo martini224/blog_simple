@@ -1,7 +1,7 @@
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/app/session.php'); ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/app/session.php'); ?>
 
 <?php
-require($_SERVER['DOCUMENT_ROOT'].'/php_simple/app/db.php');
+require($_SERVER['DOCUMENT_ROOT'].'/blog_simple/app/db.php');
 
 $id = null;
 
@@ -34,7 +34,7 @@ if(isset($db) && isset($id)) {
 <!doctype html>
 <html lang="fr">
 <head>
-    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/headers.php') ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/headers.php') ?>
 
     <script>
 
@@ -43,7 +43,7 @@ if(isset($db) && isset($id)) {
     <title>Home blog</title>
 </head>
 <body>
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/navigation.php') ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/navigation.php') ?>
 
 <main role="main">
     <?php echo realpath('app/session.php') ?>
@@ -52,9 +52,9 @@ if(isset($db) && isset($id)) {
             <div class="col">
                 <?php
                     if(is_null($article)) {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/php_simple/components/errors/not_found.php');
+                        require($_SERVER['DOCUMENT_ROOT'] . '/blog_simple/components/errors/not_found.php');
                     } else {
-                        require($_SERVER['DOCUMENT_ROOT'] . '/php_simple/components/articles/article_component.php');
+                        require($_SERVER['DOCUMENT_ROOT'] . '/blog_simple/components/articles/article_component.php');
                     }
                 ?>
             </div>
@@ -62,7 +62,7 @@ if(isset($db) && isset($id)) {
     </div>
 </main>
 
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/footer.php') ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/footer.php') ?>
 
 </body>
 </html>

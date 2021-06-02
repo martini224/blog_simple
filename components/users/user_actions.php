@@ -7,6 +7,6 @@
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
         <li><a class="dropdown-item" href="">Modifier son profil</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="http://localhost/php_simple/pages/users/logout.php">Déconnexion</a></li>
+        <li><a class="dropdown-item" href="http://localhost/blog_simple/pages/users/logout.php">Déconnexion</a></li>
     </ul>
 </li>

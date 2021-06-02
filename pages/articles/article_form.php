@@ -1,7 +1,7 @@
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/app/session.php'); ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/app/session.php'); ?>
 
 <?php
-require($_SERVER['DOCUMENT_ROOT'].'/php_simple/app/db.php');
+require($_SERVER['DOCUMENT_ROOT'].'/blog_simple/app/db.php');
 
 $id = null;
 
@@ -32,7 +32,7 @@ if(isset($user)) {
         }
     }
 
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/php_simple/app/form_utils.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/blog_simple/app/form_utils.php');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $title = test_input($_POST["title"]);
@@ -52,7 +52,7 @@ if(isset($user)) {
         }
 
         if (isset($_FILES["image"])) {
-            $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/php_simple/resources/images/articles/";
+            $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/blog_simple/resources/images/articles/";
             $image = $target_dir . $_FILES["image"]["name"];
             $imageExtension = strtolower(pathinfo($image,PATHINFO_EXTENSION));
 
@@ -82,7 +82,7 @@ if(isset($user)) {
                 $stmt->bindParam(':users_id', $user['id'], PDO::PARAM_INT);
                 $stmt->execute();
 
-                //header('Location: http://localhost/php_simple/pages/articles/articles.php');
+                //header('Location: http://localhost/blog_simple/pages/articles/articles.php');
             } catch (Exception $exception) {
                 echo $exception;
             }
@@ -95,7 +95,7 @@ if(isset($user)) {
 <!doctype html>
 <html lang="fr">
 <head>
-    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/headers.php') ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/headers.php') ?>
 
     <script>
 
@@ -104,7 +104,7 @@ if(isset($user)) {
     <title>Home blog</title>
 </head>
 <body>
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/navigation.php') ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/navigation.php') ?>
 
 <main role="main">
     <?php echo realpath('app/session.php') ?>
@@ -156,7 +156,7 @@ if(isset($user)) {
     </div>
 </main>
 
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/footer.php') ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/footer.php') ?>
 
 </body>
 </html>

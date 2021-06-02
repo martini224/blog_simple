@@ -1,9 +1,9 @@
 <?php
-    require($_SERVER['DOCUMENT_ROOT'].'/php_simple/app/db.php');
+    require($_SERVER['DOCUMENT_ROOT'].'/blog_simple/app/db.php');
 
     $errors = [];
 
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/php_simple/app/form_utils.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/blog_simple/app/form_utils.php');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = test_input($_POST["email"]);
@@ -32,7 +32,7 @@
 
                     if(password_verify($password, $user['password'])) {
                         $_SESSION['user'] = $user;
-                        header('Location: http://localhost/php_simple/index.php');
+                        header('Location: http://localhost/blog_simple/index.php');
                     } else {
                         $user = null;
                     }

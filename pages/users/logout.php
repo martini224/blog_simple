@@ -5,4 +5,4 @@ session_unset();
 // destroy the session
 session_destroy();
 
-header('Location: http://localhost/php_simple/index.php');
+header('Location: http://localhost/blog_simple/index.php');

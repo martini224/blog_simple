@@ -13,7 +13,7 @@
         </div>
     </div>
     <div>
-        <img src="<?php echo "http://localhost/php_simple/resources/images/articles/" . $article['id'] . '.' . $article['image_extension'] ?>" class="card-img-top article-image" alt="article-image">
+        <img src="<?php echo "http://localhost/blog_simple/resources/images/articles/" . $article['id'] . '.' . $article['image_extension'] ?>" class="card-img-top article-image" alt="article-image">
     </div>
     <div class="mt-3">
         <div>

@@ -1,15 +1,32 @@
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/app/session.php'); ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/app/session.php'); ?>
 
 <?php
-    require($_SERVER['DOCUMENT_ROOT'].'/php_simple/app/db.php');
+    require($_SERVER['DOCUMENT_ROOT'].'/blog_simple/app/db.php');
 
     $articles = [];
 
+    $id = null;
+
     if(isset($db)) {
         try {
-            $sql = "SELECT id, title, excerpt, body, image_extension, users_id, created_at, updated_at FROM article order by updated_at desc";
+            $sql = "SELECT id, title, excerpt, body, image_extension, users_id, created_at, updated_at FROM article ";
+
+            if(isset($_GET['search'])) {
+                $sql .= " where title like :search ";
+            }
+
+            $sql .= " order by updated_at desc";
 
             $stmt = $db->prepare($sql);
+
+            if(isset($_GET['search']))
+            {
+                $search = $_GET['search'];
+                $search = "$search%";
+
+                $stmt->bindParam(':search', $search, PDO::PARAM_STR);
+            }
+
             $stmt->execute();
             $articles = $stmt->fetchAll();
 
@@ -23,7 +40,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/headers.php') ?>
+    <?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/headers.php') ?>
 
     <script>
 
@@ -32,7 +49,7 @@
     <title>Home blog</title>
 </head>
 <body>
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/navigation.php') ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/navigation.php') ?>
 
 <main role="main">
     <?php echo realpath('app/session.php') ?>
@@ -47,7 +64,7 @@
                             '<div class="card-body">' .
                             '    <h5 class="card-title">' .  $article['title'] . '</h5>' .
                             '   <p class="card-text article-excerpt">' . $article['excerpt'] . '</p>' .
-                            '    <a href="http://localhost/php_simple/pages/articles/article.php?id=' . $article['id'] . '" class="btn btn-primary">Lire l article</a>' .
+                            '    <a href="http://localhost/blog_simple/pages/articles/article.php?id=' . $article['id'] . '" class="btn btn-primary">Lire l article</a>' .
                             '</div>' .
                             '<div class="card-footer">' .
                             '    <small class="text-muted">' . $article['updated_at'] . '</small>' .
@@ -65,7 +82,7 @@
     </div>
 </main>
 
-<?php require_once($_SERVER['DOCUMENT_ROOT'].'/php_simple/components/footer.php') ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'].'/blog_simple/components/footer.php') ?>
 
 </body>
 </html>
